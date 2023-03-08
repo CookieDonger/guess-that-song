@@ -1,0 +1,33 @@
+{%extends "layout.html" %}
+{% block links %}
+<li class="nav-item">
+    <a class="nav-link" aria-current="page" href="/">Import Songs</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link active" href="/guess">Guess</a>
+</li>
+{% endblock %}
+
+{% block main %}
+<form action="/reload" method="post">
+    <p>Enter length of excerpt (0 for whole song)</p>
+    <input autofocus class="form-control mx-auto w-auto" name="length" placeholder="Enter length" type="int">
+    <br>
+    <p>Get excerpt</p>
+    <button type="submit">Get a Song</button>
+</form>
+<br>
+<form action="/guess" method="post">
+    <p>Play the excerpt</p>
+    <button type="submit">Play Song</button>
+</form>
+<br>
+<form action="/reveal" method="post">
+    <p>Reveal the answer</p>
+    <button type="submit">Reveal</button>
+</form>
+<br>
+{{ songname }}
+<br>
+{{ name }}
+{% endblock %}

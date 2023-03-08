@@ -1,0 +1,52 @@
+{%extends "layout.html" %}
+{% block links %}
+<li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="/">Import Songs</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/guess">Guess</a>
+</li>
+{% endblock %}
+
+{% block main %}
+<div class="mb-3">
+    <p>Hello! Welcome to the song guesser! This is a site just for testing how well you know your own playlist by playing random parts of your songs!</p>
+    <p>To get started, submit your Spotify playlist below by pasting it's link:</p>
+    <p>You must submit playlists, as albums and individual tracks will not work</p>
+    <form action="/" method="post">
+        <input autofocus class="form-control mx-auto w-auto" name="url" placeholder="Copy and paste here" type="text">
+    </form>
+    <br>
+    <p>{{ error }}</p>
+    <p>Make sure to open up the spotify app so you can play the songs!</p>
+    <br>
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    <h2>
+                        Your Playlists:
+                    </h2>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for playlist in playlists %}
+            <tr>
+                <td>
+                    <a href={{ playlist }} target="_blank">{{ playlist }}</a>
+                </td>
+                <td>
+                    <form action="/delete" method="post">
+                        <input name="playlist" type="hidden" value="{{ playlist }}">
+                        <button type="submit">Remove Playlist</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <i class="fa-brands fa-spotify"></i>
+</div>
+
+{% endblock %}
