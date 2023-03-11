@@ -1,0 +1,68 @@
+body
+{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Size for brand */
+nav .navbar-brand
+{
+    font-size: xx-large;
+}
+
+/* Colors for brand */
+nav .navbar-brand .blue
+{
+    color: #537fbe;
+}
+nav .navbar-brand .red
+{
+    color: #ea433b;
+}
+nav .navbar-brand .yellow
+{
+    color: #f5b82e;
+}
+nav .navbar-brand .green
+{
+    color: #2e944b;
+}
+
+nav .navbar-brand .black
+{
+    color: black;
+}
+
+nav .navbar-brand .funny
+{
+    color: #86E5FF;
+}
+
+nav .navbar-brand .funny2
+{
+    color: #AACB73;
+}
+
+table
+{
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: separate;
+    border-spacing: 150px 15px;
+}
+
+h2
+{
+    font-weight: bold;
+}
+
+button
+{
+    color: white;
+    font-weight: bold;
+    background-color: #1DB954;
+    border-radius: 12px;
+    border: none;
+    padding: 0.4em 1em;
+}
