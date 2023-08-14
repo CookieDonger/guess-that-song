@@ -2,14 +2,14 @@
 #### Video Demo:  <https://youtu.be/oVMbu6hteU8>
 #### Description: A website which will connect to your spotify app and play random parts of your songs.
 
-app.py
+application.py
 
-    The first file, app.py, is the main part of the project. I decided to make a webpage using
+    The first file, application.py, is the main part of the project. I decided to make a webpage using
     python and HTML documents for the web part of the project, so this meant that there wasn't
     much Javascript, which was fine with me because I'm less experienced and less comfortable
     using Javascript compared to Python.
 
-    Within app.py, I started up Flask and imported some data from my dotenv files to keep my Spotify project information safe.
+    Within application.py, I started up Flask and imported some data from my dotenv files to keep my Spotify project information safe.
     I decided to set up global variables for the random numbers which determined which song to play because I had multiple
     routes which needed to manipulate these numbers in order to make it as easy to use for the user.
 
@@ -52,8 +52,3 @@ templates, .html
 
     templates contains layout.html, which is what I used to create the headers of the webpage. index.html and guess.html have small differences
     in their links so the user can tell which page they're on, but other than that it's just extending it off of layout.html to write less code.
-
-venv
-
-    venv had my virtual environment which was quite the experience to figure out and get working, and even now I'm not sure why some things
-    don't work, but I guess that's how it goes sometimes.
