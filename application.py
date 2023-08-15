@@ -1,5 +1,6 @@
 import os
-from flask import Flask, redirect, render_template, request
+from flask import Flask, redirect, render_template, request, session
+from flask_session import Session
 from helpers import lookup
 from dotenv import load_dotenv
 import spotipy
@@ -9,20 +10,30 @@ import random
 
 application = Flask(__name__)
 
+application.secret_key = b'0d498dd9a4ea4b34f02cf616f5e0d2dc1ee60ac60526a6b4ed4ed9eec5bb04f4'
+application.config['SESSION_PERMANENT'] = False
+application.config['SESSION_TYPE'] = 'filesystem'
+Session(application)
+
 load_dotenv()
 
 CLIENT_ID = os.getenv('SPOTIPY_CLIENT_ID')
 CLIENT_SECRET = os.getenv('SPOTIPY_CLIENT_SECRET')
 REDIRECT_URI = os.getenv('SPOTIPY_REDIRECT_URI')
 
-# Doing these as globals due to needing reveal and guess to both use the same variables
-playlists = []
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_uri=REDIRECT_URI, scope="user-read-playback-state user-modify-playback-state user-read-currently-playing"))
-playlist = ''
-track = 0
-length = 0
-part = 0
-has_excerpt = False
+
+@application.before_request
+def before_request():
+    # Hopefully instantiates for each user
+    session['playlists'] = session.get('playlists', [])
+    session['sp'] = session.get('sp', spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_uri=REDIRECT_URI, scope="user-read-playback-state user-modify-playback-state user-read-currently-playing")))
+    session['playlist'] = session.get('playlist', '')
+    session['track'] = session.get('track', 0)
+    session['length'] = session.get('length', 0)
+    session['part'] = session.get('part', 0)
+    session['has_excerpt'] = session.get('has_excerpt', False)
+    session['error'] = session.get('error', '')
+
 
 # Should do magic cache stuff, I'm not sure myself lol
 @application.after_request
@@ -35,104 +46,94 @@ def after_request(response):
 
 @application.route("/", methods=["GET", "POST"])
 def index():
-    global length
-    error = ''
     # Just setting up the index page
     if request.method == "GET":
-        length = 0
-        return render_template("index.html", error=error, playlists=playlists)
+        return render_template("index.html", playlists=session['playlists'])
     if request.method == "POST":
         url = request.form.get("url")
-        playlist = lookup(url)
+        session['playlistadd'] = lookup(url)
         # If the URL does not exist
-        if playlist is None:
-            error = "Invalid URL"
-            return render_template("index.html", error=error, playlists=playlists)
+        if session['playlistadd'] is None:
+            session['error'] = "Invalid URL"
+            return render_template("index.html", error=session['error'], playlists=session['playlists'])
         # If the URL is not a spotify playlist
         elif "open.spotify.com/playlist/" not in url:
-            error = "Not a spotify playlist"
-            return render_template("index.html", error=error, playlists=playlists)
+            session['error'] = "Not a spotify playlist"
+            return render_template("index.html", error=session['error'], playlists=session['playlists'])
         # Adding playlist to the list of playlists
         else:
             # Telling user if playlist already exists
-            if url in playlists:
-                error = "Playlist has already been added"
-                return render_template("index.html", error=error, playlists=playlists)
+            if url in session['playlists']:
+                session['error'] = "Playlist has already been added"
+                return render_template("index.html", error=session['error'], playlists=session['playlists'])
             else:
-                playlists.append(url)
-                return render_template("index.html", error=error, playlists=playlists)
+                session['playlists'].append(url)
+                return render_template("index.html", error=session['error'], playlists=session['playlists'])
 
 
 # Option to remove playlists
 @application.route("/delete", methods=["POST"])
 def delete():
-    playlist = request.form.get("playlist")
-    playlists.remove(playlist)
+    if not session.get('name'):
+        return redirect('/login')
+    session['playlistremove'] = request.form.get("playlist")
+    session['playlists'].remove(session['playlistremove'])
     return redirect("/")
 
 
 # Here's where we manipulate the global variables
 @application.route("/guess", methods=["GET", "POST"])
 def guess():
-    global track
-    global length
-    global playlist
-    global part
     if request.method == "GET":
         # Not letting you go to the page if you have no playlists
-        if len(playlists) == 0:
+        if len(session['playlists']) == 0:
             return redirect("/")
         return render_template("guess.html")
     # Starting playback
     if request.method == "POST":
         # You need to get an excerpt first, so I just redirect if there is no excerpt
-        if has_excerpt is False:
+        if session['has_excerpt'] is False:
             return redirect("/guess")
         # For whole song
-        if length == 0:
+        if session['length'] == 0:
             # Making sure there's an active device
             try:
-                sp.start_playback(device_id=sp.devices()['devices'][0]['id'], context_uri=playlist, offset={"position": track})
+                session['sp'].start_playback(device_id=session['sp'].devices()['devices'][0]['id'], context_uri=session['playlist'], offset={"position": session['track']})
             except Exception:
-                error = "No active device found"
-                return render_template("index.html", error=error, playlists=playlists)
+                session['error'] = "No active device found"
+                return render_template("index.html", error=session['error'], playlists=session['playlists'])
         # For excerpts
         else:
             # Again making sure there's an active device
             try:
-                sp.start_playback(device_id=sp.devices()['devices'][0]['id'], context_uri=playlist, offset={"position": track}, position_ms=part)
-                time.sleep(int(length))
-                sp.pause_playback()
+                session['sp'].start_playback(device_id=session['sp'].devices()['devices'][0]['id'], context_uri=session['playlist'], offset={"position": session['track']}, position_ms=session['part'])
+                time.sleep(int(session['length']))
+                session['sp'].pause_playback()
             except Exception:
-                error = "No active device found"
-                return render_template("index.html", error=error, playlists=playlists)
-        return render_template('guess.html')
+                session['error'] = "No active device found"
+                return render_template("index.html", error=session['error'], playlists=session['playlists'])
+        return redirect('/guess')
 
 
 # Getting a new excerpt
 @application.route("/reload", methods=["POST"])
 def reload():
-    global track
-    global length
-    global playlist
-    global part
-    global has_excerpt
     # Checking if user specified length
     if request.form.get("length"):
-        length = int(request.form.get("length"))
+        session['length'] = int(request.form.get("length"))
     # Random playlist
-    rng = random.randint(0, len(playlists) - 1)
-    playlist = playlists[rng]
+    rng = random.randint(0, len(session['playlists']) - 1)
+    session['playlist'] = session['playlists'][rng]
     # Random track
-    total = sp.playlist_items(playlist, fields='total')
-    total = total['total']
-    track = random.randint(0, total - 1)
+    session['total'] = session['sp'].playlist_items(session['playlist'], fields='total')
+    session['total'] = session['total']['total']
+    session['track'] = random.randint(0, session['total'] - 1)
     # Random part
-    duration = sp.playlist_tracks(playlist, fields='items', limit=1, offset=track)
-    duration = int(duration['items'][0]['track']['duration_ms'])
-    lengthms = int(length) * 1000
-    part = random.randint(0, duration - int(lengthms))
-    has_excerpt = True
+    session['duration'] = session['sp'].playlist_tracks(session['playlist'], fields='items', limit=1, offset=session['track'])
+    session['duration'] = int(session['duration']['items'][0]['track']['duration_ms'])
+    lengthms = int(session['length']) * 1000
+    session['part'] = random.randint(0, session['duration'] - int(lengthms))
+    session['has_excerpt'] = True
     return render_template("guess.html")
 
 
@@ -140,10 +141,10 @@ def reload():
 # I did both song name and composer because some songs have the same name.
 @application.route("/reveal", methods=["POST"])
 def reveal():
-    song = sp.playlist_tracks(playlist, fields='items', limit=1, offset=track)
-    songname = song['items'][0]['track']['name']
-    name = song['items'][0]['track']['artists'][0]['name']
-    return render_template("guess.html", songname=songname, name=name)
+    session['song'] = session['sp'].playlist_tracks(session['playlist'], fields='items', limit=1, offset=session['track'])
+    session['songname'] = session['song']['items'][0]['track']['name']
+    session['name'] = session['song']['items'][0]['track']['artists'][0]['name']
+    return render_template("guess.html", songname=session['songname'], name=session['name'])
 
 
 if __name__ == "__main__":

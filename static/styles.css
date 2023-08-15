@@ -91,3 +91,15 @@ button
     width: fit-content;
     margin: auto;
 }
+
+.login-button {
+    background-color: #1DB954;
+    color: white;
+    font-size: 30px;
+    padding-top: 8px;
+}
+
+.h0 {
+    font-size: 72px;
+    font-weight: bold;
+}
