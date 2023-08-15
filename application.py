@@ -17,10 +17,7 @@ REDIRECT_URI = os.getenv('SPOTIPY_REDIRECT_URI')
 
 # Doing these as globals due to needing reveal and guess to both use the same variables
 playlists = []
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=CLIENT_ID, 
-                                               client_secret=CLIENT_SECRET, 
-                                               redirect_uri=REDIRECT_URI, 
-                                               scope="user-read-playback-state user-modify-playback-state user-read-currently-playing"))
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_uri=REDIRECT_URI, scope="user-read-playback-state user-modify-playback-state user-read-currently-playing"))
 playlist = ''
 track = 0
 length = 0
@@ -39,7 +36,7 @@ def after_request(response):
 @application.route("/", methods=["GET", "POST"])
 def index():
     global length
-    error = ""
+    error = ''
     # Just setting up the index page
     if request.method == "GET":
         length = 0
@@ -95,7 +92,7 @@ def guess():
         if length == 0:
             # Making sure there's an active device
             try:
-                sp.start_playback(context_uri=playlist, offset={"position": track})
+                sp.start_playback(device_id=sp.devices()['devices'][0]['id'], context_uri=playlist, offset={"position": track})
             except Exception:
                 error = "No active device found"
                 return render_template("index.html", error=error, playlists=playlists)
@@ -103,13 +100,13 @@ def guess():
         else:
             # Again making sure there's an active device
             try:
-                sp.start_playback(context_uri=playlist, offset={"position": track}, position_ms=part)
+                sp.start_playback(device_id=sp.devices()['devices'][0]['id'], context_uri=playlist, offset={"position": track}, position_ms=part)
                 time.sleep(int(length))
                 sp.pause_playback()
             except Exception:
                 error = "No active device found"
                 return render_template("index.html", error=error, playlists=playlists)
-        return redirect("/guess")
+        return render_template('guess.html')
 
 
 # Getting a new excerpt

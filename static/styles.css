@@ -3,6 +3,13 @@ body
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     text-align: center;
+    background-color: #191414;
+    color: white;
+    background-image: url('music_background.jpg');
+}
+
+.navbar {
+    background-color: #1DB954;
 }
 
 /* Size for brand */
@@ -14,15 +21,15 @@ nav .navbar-brand
 /* Colors for brand */
 nav .navbar-brand .blue
 {
-    color: #537fbe;
+    color: #2596be;
 }
 nav .navbar-brand .red
 {
-    color: #ea433b;
+    color: #b91d24;
 }
 nav .navbar-brand .yellow
 {
-    color: #f5b82e;
+    color: #ffcf5f;
 }
 nav .navbar-brand .green
 {
@@ -65,4 +72,22 @@ button
     border-radius: 12px;
     border: none;
     padding: 0.4em 1em;
+}
+
+.error {
+    width: fit-content;
+    margin: auto;
+    background-color: #ff726a;
+    color: rgb(141, 0, 0);
+    padding: 0px 5px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.spotify-title {
+    background-color: #1DB954;
+    padding: 10px 15px;
+    border-radius: 10px;
+    width: fit-content;
+    margin: auto;
 }
