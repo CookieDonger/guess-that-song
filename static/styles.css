@@ -18,45 +18,12 @@ nav .navbar-brand
     font-size: xx-large;
 }
 
-/* Colors for brand */
-nav .navbar-brand .blue
-{
-    color: #2596be;
-}
-nav .navbar-brand .red
-{
-    color: #b91d24;
-}
-nav .navbar-brand .yellow
-{
-    color: #ffcf5f;
-}
-nav .navbar-brand .green
-{
-    color: #2e944b;
-}
-
-nav .navbar-brand .black
-{
-    color: black;
-}
-
-nav .navbar-brand .funny
-{
-    color: #86E5FF;
-}
-
-nav .navbar-brand .funny2
-{
-    color: #AACB73;
-}
-
 table
 {
     margin-left: auto;
     margin-right: auto;
     border-collapse: separate;
-    border-spacing: 150px 15px;
+    border-spacing: 10px;
 }
 
 h2
@@ -92,14 +59,11 @@ button
     margin: auto;
 }
 
-.login-button {
-    background-color: #1DB954;
-    color: white;
-    font-size: 30px;
-    padding-top: 8px;
+.linktable {
+    display: grid;
+    grid-template-columns: auto auto;
 }
 
-.h0 {
-    font-size: 72px;
-    font-weight: bold;
+.tablelink {
+    overflow: hidden;
 }

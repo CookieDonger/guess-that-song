@@ -68,14 +68,13 @@ def index():
                 return render_template("index.html", error=session['error'], playlists=session['playlists'])
             else:
                 session['playlists'].append(url)
+                session['error'] = ''
                 return render_template("index.html", error=session['error'], playlists=session['playlists'])
 
 
 # Option to remove playlists
 @application.route("/delete", methods=["POST"])
 def delete():
-    if not session.get('name'):
-        return redirect('/login')
     session['playlistremove'] = request.form.get("playlist")
     session['playlists'].remove(session['playlistremove'])
     return redirect("/")

@@ -19,32 +19,20 @@
     <div class="error">{{ error }}</div>
     <p>Make sure to open up the spotify app so you can play the songs!</p>
     <br>
-    <table>
-        <thead>
-            <tr>
-                <th>
-                    <h2 class="spotify-title">
-                        Your Playlists:
-                    </h2>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
+        <h2 class="spotify-title" style="margin-bottom: 40px;">
+            Your Playlists:
+        </h2>
+        <div class="linktable">
             {% for playlist in playlists %}
-            <tr>
-                <td>
-                    <a href={{ playlist }} target="_blank">{{ playlist }}</a>
-                </td>
-                <td>
+                <div class="tablelink"><a href={{ playlist }} target="_blank">{{ playlist }}</a></div>
+                <div>                    
                     <form action="/delete" method="post">
-                        <input name="playlist" type="hidden" value="{{ playlist }}">
-                        <button type="submit">Remove Playlist</button>
+                    <input name="playlist" type="hidden" value="{{ playlist }}">
+                    <button type="submit">Remove Playlist</button>
                     </form>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <i class="fa fa-spotify" style="font-size:48px;"></i>
+                </div>
+            {% endfor %}
+        </div>
+    <i class="fa fa-spotify" style="font-size:48px; margin-top:40px;"></i>
 </div>
 {% endblock %}
