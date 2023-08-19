@@ -37,23 +37,22 @@ Delete simply removes a playlist from the list.
 #### /guess
 
 <p>
-Guess takes the global variables for RNG so that it can choose a random song. If the global variables for RNG have not been set,
+Guess takes the variables for RNG so that it can choose a random song. If the variables for RNG have not been set,
 it will not play a song. If no active player is found, it will return to index will an error message saying so. If length is equal
-to 0, then it shall not use the part global variable when playing.
+to 0, then it shall not use the part variable when playing.
 </p>
 
 #### /reload
 
 <p>
 Reload will reroll the numbers and find a new excerpt to play, and it makes sure that the song, part, and playlist exist by using
-the Spotify data, hence why I decided to only limit it to Spotify playlists because albums and tracks have different data and that was
-painful to try and figure out how to access the data.
+the Spotify data, hence why I decided to only limit it to Spotify playlists because albums and tracks have different data to simplify the process of gathering data.
 </p>
 
 #### /reveal  
 
 <p>
-Reveal just takes the data of the song name and artist(Composer), and then just slaps it onto the HTML for the user to see, again
+Reveal just takes the data of the song name and artist(Composer), and then just puts it onto the HTML for the user to see via render_template, again
 this is why I only allowed playlists.
 </p>
 
@@ -67,7 +66,7 @@ much helpers.py to deal with authentication, so it only has a lookup function to
 ### static: styles.css
 
 <p>
-static contains my styles.css, which just gave me the style choices I made, along with the Spotify-esque buttons
+static contains my styles.css, which just gave me the style choices I made, along with the Spotify-esque buttons and the overall Spotify feel.
 </p>
 
 ### templates: layout.html, index.html, guess.html, login.html
