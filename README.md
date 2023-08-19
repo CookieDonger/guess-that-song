@@ -1,20 +1,24 @@
  # Guess That Song!
-#### Video Demo:  <https://youtu.be/oVMbu6hteU8>
-#### Link to Site: http://guessthatsong2.us-east-2.elasticbeanstalk.com/
+#### Link to Site: http://guessthatsong.us-east-2.elasticbeanstalk.com/
 #### Description: A website which will connect to your spotify app and play random parts of your songs.
+
+<p>
+This repository contains the local version of the project, which you can download and run by downloading the necessary packages in the requirements.txt
+into a venv and then starting it. Type python3 application.py in the main directory and it should open a page at 127.0.0.1:5000. This local version has
+all of the same functions as the deployed version, just using a different Spotify application as the web version requires me to authenticate anyone who
+wishes to use it as it is currently in development mode.
+</p>
 
 ### application.py
 
 <p>
-The first file, application.py, is the main part of the project. I decided to make a webpage using
-python and HTML documents for the web part of the project, so this meant that there wasn't
-much Javascript, which was fine with me because I'm less experienced and less comfortable
-using Javascript compared to Python.
+Application.py handles all of the different routes of the project, and was renamed from app.py as to deploy it onto
+AWS servers.
 </p>
 <p>
 Within application.py, I started up Flask and imported some data from my dotenv files to keep my Spotify project information safe.
-I decided to set up global variables for the random numbers which determined which song to play because I had multiple
-routes which needed to manipulate these numbers in order to make it as easy to use for the user.
+I decided to set up session variables for the random numbers which determined which song to play in order to keep variables separate
+for each user.
 </p>
 
 #### /index
@@ -60,13 +64,13 @@ helpers.py was supposed to be bigger, but when I discovered Spotipy it made my l
 much helpers.py to deal with authentication, so it only has a lookup function to check if a site exists.
 </p>
 
-### static, styles.css
+### static: styles.css
 
 <p>
 static contains my styles.css, which just gave me the style choices I made, along with the Spotify-esque buttons
 </p>
 
-### templates, .html
+### templates: layout.html, index.html, guess.html, login.html
 
 <p>
 templates contains layout.html, which is what I used to create the headers of the webpage. index.html and guess.html have small differences
