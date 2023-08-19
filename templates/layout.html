@@ -24,15 +24,17 @@
     <body>
         <nav class="navbar navbar-expand-md navbar-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/">Guess That Song!<i class="fa fa-spotify" style="font-size:48px;color:black;position:relative;left:10px;top:5px;"></i></a>
+                <a class="navbar-brand mb-2" href="/">Guess That Song!<i class="fa fa-spotify" style="font-size:48px;color:black;position:relative;left:10px;top:6px;"></i></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" style="margin-left: 10px;" id="collapse">
-                    <ul class="navbar-nav me-auto mt-2">
+                    <ul class="navbar-nav me-auto">
                         {% block links %}
                         {% endblock %}
                     </ul>
+                    {% block logout %}
+                    {% endblock %}
                 </div>
             </div>
         </nav>

@@ -1,11 +1,19 @@
 {%extends "layout.html" %}
 {% block links %}
-<li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="/">Import Songs</a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" href="/guess">Guess</a>
-</li>
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="/">Import Songs</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/guess">Guess</a>
+    </li>
+{% endblock %}
+
+{% block logout %}
+    <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="/logout">Log Out</a>
+        </li>
+    </ul>
 {% endblock %}
 
 {% block main %}
@@ -13,7 +21,7 @@
     <p>To get started, submit your Spotify playlist below by pasting it's link:</p>
     <p>You must submit playlists, as albums and individual tracks will not work</p>
     <form action="/" method="post">
-        <input autofocus class="form-control mx-auto w-auto" name="url" placeholder="Copy and paste here" type="text">
+        <input autofocus class="form-control mx-auto w-auto" name="url" placeholder="Copy and paste here" type="text" autocomplete="off">
     </form>
     <br>
     <div class="error">{{ error }}</div>
@@ -24,12 +32,14 @@
         </h2>
         <div class="linktable">
             {% for playlist in playlists %}
-                <div class="tablelink"><a href={{ playlist }} target="_blank">{{ playlist }}</a></div>
-                <div>                    
-                    <form action="/delete" method="post">
-                    <input name="playlist" type="hidden" value="{{ playlist }}">
-                    <button type="submit">Remove Playlist</button>
-                    </form>
+                <div class="tablerow" style="margin-bottom: 40px; background-color: white; width: fit-content; margin-left: auto; margin-right: auto;">
+                    <div class="tablelink" style="margin-bottom: 10px;"><a href={{ playlist }} target="_blank">{{ playlist }}</a></div>
+                    <div>                    
+                        <form action="/delete" method="post">
+                            <input name="playlist" type="hidden" value="{{ playlist }}">
+                            <button type="submit">Remove Playlist</button>
+                        </form>
+                    </div>
                 </div>
             {% endfor %}
         </div>

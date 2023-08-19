@@ -1,7 +1,6 @@
-{% extends 'layout.html' %}
-
+{%extends "layout.html" %}
 {% block main %}
-<div class="h0">Guess That Song!</div>
-<div style="font-size: 24px; max-width: 500px; margin: 50px auto 50px auto;">Welcome to the song guesser! This is a site just for testing how well you know a playlist by playing random parts of songs!</div>
-<button type="button" class="login-button">Login<i class="fa fa-spotify" style="font-size:48px; position: relative; left: 10px; top: 5px;"></i></button>
+    <div class="h0" style="background-color:#ffffff; color: black; width: fit-content; margin: auto; border-radius: 50px; padding: 30px;">Welcome to <span style="background-color: #1DB954; color: white; padding: 20px; border-radius: 30px;">Guess That Song!</span></div>
+    <div style="margin-bottom: 20px; margin-top: 40px; font-size: 36px;">To get started, login below:</div>
+    <a href={{ url }} class="button" style="text-decoration: none; padding-right: 40px;">Login<i class="fa fa-spotify" style="font-size:48px; color:black; position: relative; top: 7.5px; left: 10px;"></i></a>
 {% endblock %}

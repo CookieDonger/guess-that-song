@@ -26,12 +26,17 @@ table
     border-spacing: 10px;
 }
 
+.h0
+{
+    font-size: 72px;
+}
+
 h2
 {
     font-weight: bold;
 }
 
-button
+button, .button
 {
     color: white;
     font-weight: bold;
@@ -39,6 +44,11 @@ button
     border-radius: 12px;
     border: none;
     padding: 0.4em 1em;
+}
+
+.button
+{
+    font-size: 30px;
 }
 
 .error {
@@ -59,11 +69,21 @@ button
     margin: auto;
 }
 
-.linktable {
-    display: grid;
-    grid-template-columns: auto auto;
+.tablerow {
+    margin-bottom: 40px; 
+    background-color: white; 
+    width: fit-content; 
+    margin-left: auto; 
+    margin-right: auto;
+    padding: 30px;
+    border-radius: 100px;
+    border: 5px outset #1DB954;
 }
 
 .tablelink {
     overflow: hidden;
+}
+
+.tablelink a {
+    color: black;
 }
