@@ -4,8 +4,8 @@
 
 <p>
 This repository contains the local version of the project, which you can download and run by downloading the necessary packages in the requirements.txt
-into a venv and then starting it. Type python3 application.py in the main directory and it should open a page at 127.0.0.1:5000. This local version has
-all of the same functions as the deployed version, just using a different Spotify application as the web version requires me to authenticate anyone who
+into a venv and then starting it. You then need to create a Spotify application at https://developer.spotify.com/dashboard and set the Redirect URI as http://localhost:5000/. Create a .env file in the main directory where you set SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, and SPOTIFY_REDIRECT_URI to your newly created app's client id, client secret, and the redirect uri you just set. Type python3 application.py in the main directory and it should open a page at 127.0.0.1:5000. This local version has
+all of the same functions as the deployed version, just that you must create your own Spotify application as the web version requires me to authenticate anyone who
 wishes to use it as it is currently in development mode.
 </p>
 
